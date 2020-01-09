@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+<!-- 	DispatcherServelt에서 처리하지 않아야할 리소스 경로 설정 -->
+<!-- 	여기에 빼야할 것들 나열 -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+<!-- 	컨트롤러에서 반환된 주소에 자동으로 앞뒤로 붙일 키워드를 설정 -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+<!-- 	이 패키지에 있는건자동으로 등록해라 -->
+<!-- 	<context:component-scan base-package="com.kh.sts03" /> -->
+	
+<!-- 	주소와 컨트롤러를 연결 설정(맵핑, mapping) -->
+<!-- 	 - name에 주소 설정, class 패키지까지 다적어야함-->
+	<beans:bean name="/" class="com.kh.sts03.HomeController"></beans:bean>
+	
+</beans:beans>
