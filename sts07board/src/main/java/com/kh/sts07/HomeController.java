@@ -1,4 +1,4 @@
-package com.kh.sts05;
+package com.kh.sts07;
 
 import java.text.DateFormat;
 import java.util.Date;
