@@ -23,6 +23,6 @@
 	
 <!-- 	<context:component-scan base-package="com.kh.sts05" /> -->
 	
-	<beans:bean name="/dice" class="com.kh.sts05.DiceController"></beans:bean>
+	
 	
 </beans:beans>
