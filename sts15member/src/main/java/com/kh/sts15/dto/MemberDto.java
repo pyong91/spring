@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberProfileDto {
-	private int profile_no;
-	private String profile_uploadname;
-	private long profile_size;
+public class MemberDto {
 	private int member_no;
+	private String member_id;
+	private String member_pw;
+	private String member_nick;
 }

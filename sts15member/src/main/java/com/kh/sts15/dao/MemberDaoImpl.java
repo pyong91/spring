@@ -32,4 +32,11 @@ public class MemberDaoImpl implements MemberDao{
 		String sql = "select * from member where member_id = ?";
 		return jdbcTemplate.query(sql, mapper, id).get(0);
 	}
+
+	
+//	@Override	강사님코드
+//	public int getSequence() {
+//		String sql = "select member_seq.nextval from dual";
+//		return jdbcTemplate.queryForObject(sql, int.class);
+//	}
 }

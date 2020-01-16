@@ -4,13 +4,13 @@ import java.io.File;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.kh.sts15.dao.MemberDao;
 import com.kh.sts15.dao.MemberProfileDao;
 import com.kh.sts15.vo.MemberVO;
 
-@Repository
+@Service
 public class RegistServiceImpl implements RegistService{
 	
 	@Autowired
@@ -27,6 +27,8 @@ public class RegistServiceImpl implements RegistService{
 		memberVO.setMember_no(memberDao.getSequenceNumber(memberVO.getMember_id()));
 		memberProfileDao.insertMemberProfile(memberVO);
 	
+		
+//		이거도 Dao로 만들어서 했어야함 //////////////////////////////////////////////////
 		// 파일 저장
 		File dir = new File("D:/upload/filetest");
 		dir.mkdirs();
