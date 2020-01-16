@@ -30,6 +30,7 @@ public class RegistServiceImpl implements RegistService{
 		
 //		이거도 Dao로 만들어서 했어야함 //////////////////////////////////////////////////
 		// 파일 저장
+		// 파일이름을 맴버번호말고 파일번호로 저장해야함 고쳐야함 
 		File dir = new File("D:/upload/filetest");
 		dir.mkdirs();
 		File target = new File(dir, String.valueOf(memberVO.getMember_no()));
