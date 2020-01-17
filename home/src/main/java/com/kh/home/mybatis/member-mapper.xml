@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+	namespace : 영역을 부르는 별칭
+	parameterType : 이 명령을 실행하기 위해 필요한 데이터의 형태
+	resultType : 기대되는 결과물의 형태
+	
+	형태에 따라 파라미터를 다르게 설정할 수 있다
+	# : 문자면 ''추가, 숫자는 ''없이 설정 및 인코딩 처리를 수행
+	$ : 값을 있는 그대로 출력하는 명령이므로 주로 "항목"에 사용 (보안에취약 값에 사용 노노)
+		- $ 는 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
+	and : &&못씀..
+	
+ -->
+
+
+
+<mapper namespace="member">
+	<insert id="regist" parameterType="com.kh.home.entity.MemberDto">
+		insert into member
+		values(
+			#{id}, 
+			#{pw}, 
+			#{name}, 
+			sysdate, 
+			'일반회원', 
+			0,
+			#{post}, 
+			#{basic_addr}, 
+			#{extra_addr}, 
+			#{phone}, 
+			null
+		)
+	</insert>
+	
+	<select id="login" parameterType="member" resultType="member">
+		select * from member where id = #{id} and pw = #{pw}
+	</select>
+	
+	<update id="updateLastLogin" parameterType="java.lang.String">
+		update member set last_login = sysdate where id=#{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,433 @@
+@charset "UTF-8";
+
+/* 
+    웹 폰트 설정 
+    1. 폰트를 등록한다.(@font-face)
+    2. 등록된 폰트를 설정한다.(font-family)
+*/
+
+@font-face{
+    font-family:binggrae;
+    src:url("../font/Binggrae.ttf");
+}
+@font-face{
+    font-family:binggrae2;
+    src:url("../font/BinggraeⅡ.ttf");
+}
+@font-face{
+    font-family:melona;
+    src:url("../font/BinggraeMelona.ttf");
+}
+@font-face{
+    font-family:maple;
+    src:url("../font/Maplestory Light.ttf");
+}
+@font-face{
+	font-family:typo;
+	src:url("../font/Typo_HelloPOP_OutlineB.ttf");
+}
+
+
+/*
+    전체 스타일
+*/
+
+* {
+    box-sizing: border-box;
+    font-family: melona;
+}
+
+/*
+    테이블 스타일
+    <기본>
+    - table : 기본 테이블 스타일
+    <옵션>
+    - table-hover : 마우스가 올라간 줄에 하이라이트 적용
+    - table-stripe : 2줄마다 한 줄씩 하이라이트 적용
+*/
+.table{
+    width:100%;
+    border:1px solid black;
+
+    /* 테두리 병합 */
+    border-collapse: collapse;
+
+}
+
+.table > thead > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > td,
+.table > tbody > tr > th
+{
+    border:1px solid black;
+    padding:0.5rem;
+}
+
+/* 확장 디자인 : 줄무늬 */
+.table.table-stripe > tbody > tr:nth-child(2n){
+    background-color: #FFEEE7;
+}
+
+/* 확장 디자인 : hover */
+.table.table-hover > tbody > tr:hover{
+    background-color: #FFEEE7;
+}
+
+/*
+    모달 화면 디자인
+    - 초기에는 미표시 상태로 구현되어 있음
+    - .modal 에 display:block으로 변경하면 표시됨
+    - 모달창의 투명도는 50%
+    - 모달화면의 크기는 300x400(조정 가능)
+*/
+.modal{
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color:rgba(0, 0, 0, 0.5);
+
+    display: none;
+}
+
+.modal > .modal-view{
+    position: fixed;
+    width:300px;
+    height:400px;
+    background-color: white;
+
+    /* 가운데 배치 */
+    top:50%;
+    left:50%;
+    margin-left: -150px;
+    margin-top: -200px;
+}
+
+/*
+    사이드 메뉴 스타일
+    - 리스트 형태로 계층 구조를 구현한 사이드 메뉴 스타일
+    - hover 상황에서 하위 메뉴가 펼쳐짐
+    - 기본 폭 150px
+*/
+.custom-list{
+    list-style: none;
+    margin:0;
+    padding:0;
+    display:inline-block;
+
+    width:150px;
+}
+.custom-list > li{
+    background-color:black;
+    color:white;
+    padding:15px;
+    cursor:pointer;
+}
+.custom-list li:hover{
+    background-color:gray;
+    color:black;
+}
+
+/* 2차 이상의 메뉴 스타일 */
+.custom-list ul{
+    list-style: none;
+    padding:0;
+    margin:0;
+
+    position: absolute;
+    margin-left: 135px;
+    margin-top: -36px;
+
+    /* 2차 이상의 메뉴는 처음에 숨김 처리 */
+    display: none;
+}
+.custom-list ul > li{
+    background-color:black;
+    color:white;
+    padding:15px;
+    width:150px;
+}
+
+/*
+    메뉴를 표시하는 방법
+    1. :hover
+    2. :checked
+*/
+
+.custom-list li:hover > ul{
+    display: block;
+}
+
+/*
+메뉴 overflow 설정(넘침 설정)
+- 숨김처리 + 줄바꿈금지 + 말줄임표 설정
+*/
+.custom-list li{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/*
+    갤러리 스타일
+    - float로 구현
+    - 기본 3단
+    - 720px 이하 2단
+    - 540px 이하 1단
+*/
+.gallary::after{
+    content:"";
+    display: block;
+    clear:both;
+}
+.gallary > .gallary-item{
+    float:left;
+    width:33.3333%;
+    padding:10px;
+}
+.gallary > .gallary-item img{
+    width:100%;
+}
+
+/* 폭이 720px 이하면 2단으로 표시 */
+@media screen and (max-width:720px){
+    .gallary > .gallary-item{
+         width:50%;   
+    }
+}
+
+/* 폭이 540px 이하면 1단으로 표시 */
+@media screen and (max-width:540px){
+    .gallary > .gallary-item{
+        width:100%;
+    }
+}
+
+
+/*
+    메뉴 스타일
+    - 기본옵션(.menu) / 부가옵션(.menu-fixed)
+    - 반응형으로 구성(720px 이하면 모바일용 메뉴)
+    - 좌측메뉴는 .left-menu , 우측메뉴는 .right-menu로 표시
+*/
+
+.menu{
+    background-color:black;
+}
+.menu.menu-fixed{/* 고정 메뉴 설정(옵션) */
+    position:fixed;
+    left:0;
+    right:0;
+    top:0;
+}
+.menu > .menu-item{
+    color:white;
+    padding:1rem;
+}
+.menu > .left-menu{
+    float:left;
+}
+.menu > .right-menu{
+    float:right;
+}
+.menu::after{
+    content:"";
+    display: block;
+    clear:both;
+}
+
+.menu a{
+    text-decoration: none;/* 밑줄 제거*/
+}
+.menu a:hover{
+    color:gray;
+}
+
+.menu > label{
+    font-size: 2rem;
+    color:white;
+    padding:5px;
+    padding-left:15px;
+    cursor:pointer;
+
+    display: none;
+}
+.menu > #hamburg{
+    display: none;
+}
+.menu > #hamburg:checked ~ .menu-item{
+    display: block;
+}
+
+/* 개발용 설정 : 영역에 점선이 출력되도록 처리 */
+body[test] main, 
+body[test] header, 
+body[test] nav, 
+body[test] section, 
+body[test] footer, 
+body[test] article, 
+body[test] aside,
+body[test] div, 
+body[test] span, 
+body[test] label, 
+body[test] p{
+    border:1px dotted black;
+}
+
+/*
+    화면 레이아웃
+    - 전체 화면은 1000px로 한다
+    - 홈페이지는 브라우저 가운데 위치한다.
+    - 영역별 내부 여백은 글자 2개 높이만큼으로 한다.
+*/
+main{
+    width:1000px;
+    margin: auto;
+}
+
+header, section, footer{
+    padding:2rem;
+}
+
+/*
+    내부 영역 스타일
+    - section 내부에 화면을 배치할 때 필요한 구성요소들을 미리 디자인
+    - 영역(article) - 폭을 숫자로 지정할 수 있도록 구성
+*/
+.w-100{ width: 100%; }
+.w-90{ width: 90%; }
+.w-80{ width: 80%; }
+.w-70{ width: 70%; }
+.w-60{ width: 60%; }
+.w-50{ width: 50%; }
+.w-40{ width: 40%; }
+.w-30{ width: 30%; }
+.w-20{ width: 20%; }
+.w-10{ width: 10%; }
+
+article{
+    margin:auto;
+}
+/*
+	row의 방향 설정
+	- 기본값 : center
+	- 왼쪽 : row-left
+	- 오른쪽 : row-right
+*/
+.row, .row-left, .row-right, .row-multi{
+    margin:10px 0px;
+}
+.row{
+	text-align:center;
+}
+.row-left{
+	text-align:left;
+}
+.row-right{
+	text-align:right;
+}
+
+/* 
+	.block-item 이라는 클래스가 부여되면 block 처리(width:100%)
+*/
+.block-item{
+    width:100%; 
+} 
+
+/* 여백 */
+.row-empty{
+    height:20px;
+}
+
+/*
+	입력창과 버튼 스타일
+	- input, select, textarea : .input-item
+	- button, input[type=button], input[type=submit] : .btn
+*/
+
+.input-item{
+	font-size:1.5rem;
+	padding:0.5rem;
+}
+
+.btn{
+	font-size:1.5rem;
+	padding:0.5rem;
+	background-color:#2DB400;
+	color:white;
+	border:none;
+}
+
+.btn:hover{
+	background-color:#3EC511;
+	color:white;
+}
+
+
+/*
+	게시판 페이지 네비게이터 스타일
+	- 현재 페이지는 .active 표시를 해야함
+*/
+
+.page-navigator{
+    list-style: none;
+    margin:0;
+    padding:0;
+    display: inline-block;
+}
+.page-navigator::after{
+    content:"";
+    display: block;
+    clear:both;
+}
+.page-navigator > li{
+    float:left;
+    background-color:#005582;
+    padding:1rem;
+}
+.page-navigator > li.active{
+    background-color:#002250;
+}
+.page-navigator > li > a{
+    color:white;
+    text-decoration: none;
+}
+.page-navigator > li > a:hover{
+    color:#daf83e;
+}
+
+
+/*
+	다단 스타일(.row-multi)
+	- 2단 : .row-multi.col-2
+	- 3단 : .row-multi.col-3
+	- 4단 : .row-multi.col-4
+	- 5단 : .row-multi.col-5
+*/
+.row-multi::after{
+    content:"";
+    display: block;
+    clear:both;
+}
+
+.row-multi > *{
+    float:left;
+}
+
+.row-multi.col-2 > * { width:50%; }
+.row-multi.col-3 > * { width:33.3333%; }
+.row-multi.col-4 > * { width:25%; }
+.row-multi.col-5 > * { width:20%; }
+
+/*
+	Title 스타일 : 제목에는 그라데이션 추가
+*/
+
+.title{
+	background: rgb(2,0,36);
+	background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(27,25,159,1) 17%, rgba(88,88,244,1) 35%, rgba(152,194,254,1) 55%, rgba(194,225,240,1) 77%, rgba(255,255,255,1) 100%);
+	color:white;
+	text-align:left;
+}
