@@ -12,9 +12,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <!-- 	</settings> -->
 
 	<!-- 별칭 -->
-<!-- 	<typeAliases> -->
-<!-- 		<typeAlias type="com.kh.sts17.entity.MemoDto" alias="memoDto"/> -->
-<!-- 	</typeAliases> -->
+	<typeAliases>
+		<typeAlias type="com.kh.sts21.entity.CertDto" alias="certDto"/>
+	</typeAliases>
 
 
 
