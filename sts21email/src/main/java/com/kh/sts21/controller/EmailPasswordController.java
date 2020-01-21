@@ -1,6 +1,8 @@
 package com.kh.sts21.controller;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,20 +12,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.sts21.entity.CertDto;
 import com.kh.sts21.repository.CertDao;
+import com.kh.sts21.service.EmailService;
 import com.kh.sts21.service.RandomService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/pw")
+@Slf4j
 public class EmailPasswordController {
 	
 	@Autowired
-	private JavaMailSender sender;
-	
-	@Autowired
-	private RandomService randomService;
+	private EmailService emailService;
 	
 	@Autowired
 	private CertDao certDao;
@@ -34,46 +38,35 @@ public class EmailPasswordController {
 	}
 	
 	@PostMapping("/input")
-	public String input(@RequestParam String email) throws Exception{
-		// 1. 랜덤번호를 3자리 생성
-		String cert = randomService.generageCertificationNumber(3); 
-		
-		// 2. DB에 랜덤번호/이메일/시각을 저장
-		certDao.regist(CertDto.builder().email(email).cert_no(cert).build());
-		
-		// 3. 이메일 전송
-		MimeMessage message = sender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-		
-		helper.setTo(email);
-		helper.setSubject("비밀번호 변경 테스트 메일입니다");
-		
-		StringBuffer buffer = new StringBuffer();
-		
-		buffer.append("<h1>비밀번호 변경을 위해 하단 링크를 누르세요</h1>");
-		buffer.append("<h2>");
-		buffer.append("<a href='http://localhost:8080/sts21/pw/change?cert=");
-		buffer.append(cert+"'>");
-		buffer.append("이동");
-		buffer.append("</a>");
-		buffer.append("</h2>");
-		
-		helper.setText(buffer.toString(), true);
-		
-		sender.send(message);
-		
-		// 4. 사용자 화면 전환 (이 페이지에서 새로고침 ㄴㄴ 이메일 계속 발송됨)
-		
+	public String input(@RequestParam String email) throws MessagingException {
+		emailService.sendChangePasswordMail(email);
 		return "redirect:result";
 	}
 	
 	@GetMapping("/result")
 	public String result() {
-		return "/pw/result";
+		return "pw/result";
 	}
 	
 	@GetMapping("/change")
-	public String change() {
-		return "/pw/change";
+	public String change(
+			@RequestParam String cert,
+			@RequestParam String email,
+			HttpServletResponse response) {
+//		필요한 작업
+//		- 사용자가 이메일에서 링크를 누르면 이곳으로 들어온다.
+//		- 들어오면서 정상적인 링크라면 
+//			cert라는 파라미터와 email이라는 파라미터를 가지고 온다
+//		- 위의 두 파라미터를 받아서 DB에 검증을 실시
+//		- 위의 인증결과와 무관하게 해당 이메일의 인증정보를 모두 삭제
+		boolean enter = certDao.check(email, cert);
+		log.info("enter = {}", enter);
+		certDao.delete(email);
+		if(!enter) {
+			//에러 코드 송출
+			response.setStatus(403);
+		}
+		return "pw/change";
 	}
+	
 }

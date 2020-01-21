@@ -31,7 +31,7 @@ public class EmailCheckController {
 		// 인증번호를 세션이든 DB든 어디에 저장
 		
 //		String cert = "123456";
-		String cert = randomService.generageCertificationNumber(6);
+		String cert = randomService.generateCertificationNumber(6);
 		
 		session.setAttribute("cert", cert);
 		return emailService.sendCertMessage(email, cert);
