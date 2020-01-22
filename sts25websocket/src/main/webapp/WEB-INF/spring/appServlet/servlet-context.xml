@@ -52,9 +52,12 @@
 	
 	<!-- 웹소켓 서버 등록 -->
 	<beans:bean id="server" class="com.kh.sts25.websocket.WebSocketServer"/>
+	<beans:bean id="broadcastServer" class="com.kh.sts25.websocket.BroadcastServer"/>
 	<websocket:handlers>
+	<!-- 에코 서버 -->
 		<websocket:mapping handler="server" path="/echo" />
-	
+	<!-- 브로드캐스트 서버 -->
+		<websocket:mapping handler="broadcastServer" path="/broadcast"/>
 	</websocket:handlers>
 	
 </beans:beans>
