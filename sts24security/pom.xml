@@ -208,6 +208,13 @@
 		    <version>1.4.7</version>
 		</dependency>
 
+
+		<!-- 암호화 -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.2.1.RELEASE</version>
+		</dependency>
 		
 	</dependencies>
 	

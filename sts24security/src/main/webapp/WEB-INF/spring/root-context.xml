@@ -95,8 +95,11 @@
 	 			<prop key="mail.smtp.starttls.enable">true</prop>
 	 		</props>
 	 	</property>
-	 	
 	 </bean>
+	 	
+	 	<!-- bcrypt password encoder 등록 -->
+	 	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>	 		
+	 	
 	 
 	 <!-- 스프링 스케쥴링 활성화 -->
 	 <task:annotation-driven/>
