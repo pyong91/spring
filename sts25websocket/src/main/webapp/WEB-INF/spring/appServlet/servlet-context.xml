@@ -53,6 +53,7 @@
 	<beans:bean id="server" class="com.kh.sts25.websocket.WebSocketServer"/>
 	<beans:bean id="broadcastServer" class="com.kh.sts25.websocket.BroadcastServer"/>
 	<beans:bean id="loginChatServer" class="com.kh.sts25.websocket.LoginChatServer"/>
+	<beans:bean id="groupChatServer" class="com.kh.sts25.websocket.GroupChatServer"/>
 	<websocket:handlers>
 	<!-- 에코 서버 -->
 		<websocket:mapping handler="server" path="/echo" />
@@ -60,6 +61,8 @@
 		<websocket:mapping handler="broadcastServer" path="/broadcast"/>
 	<!-- 로그인 서버 -->
 		<websocket:mapping handler="loginChatServer" path="/loginchat"/>
+	<!-- 그룹 채팅 서버 -->
+		<websocket:mapping handler="groupChatServer" path="/group"/>
 		<!-- 인터셉터 등록 : HttpSession의 정보를 가져오기 위한 도구 -->
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor">
