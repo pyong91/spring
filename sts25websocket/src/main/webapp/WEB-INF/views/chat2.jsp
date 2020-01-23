@@ -13,17 +13,18 @@
 			
 			// 연결 시 예약 작업을 설정
 			window.socket.onopen = function() {
-				console.log("서버와 연결되었습니다.");
+				appendMessage("서버와 연결되었습니다.");
 			};
 			window.socket.onclose = function(){
-				console.log("서버와 연결이 종료되었습니다.");
+				appendMessage("서버와 연결이 종료되었습니다.");
 			};
 			window.socket.onmessage = function(e) {
-				console.log("메시지가 도착했습니다.");
-				console.log(e.data);
+// 				console.log("메시지가 도착했습니다.");
+				appendMessage(e.data);
 			};
 			window.socket.onerror = function() {
-				console.log("연결 오류가 발생했습니다.");
+// 				console.log("연결 오류가 발생했습니다.");
+				appendMessage("연결 오류가 발생했습니다.");
 			};
 			
 		});	
@@ -39,8 +40,13 @@
 		$(function(){
 		$(".disconnect-btn").click(function(){
 			window.socket.close(); // 종료코드
-		});		
-	})
+		});
+		
+	});
+		// P태그 생성해서 본문체 추가
+		function appendMessage(message){
+			$("<p>").text(message).appendTo("#chat-content");
+		}
 </script>
 
 <h1>웹소켓 클라이언트</h1>
@@ -49,3 +55,5 @@
 <hr>
 <input type="text" class="user-input">
 <button class="send-btn">보내기</button>
+
+<div id="chat-content"></div>
