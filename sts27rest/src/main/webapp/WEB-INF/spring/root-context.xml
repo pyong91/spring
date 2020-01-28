@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- 
+		이 설정파일은 요청과는 관계없는 "공용 설정"을 위한 파일
+		 - 이곳에 작성한 설정들은 servlet-context.xml에서 사용 가능
+		 - 상위 설정 파일
+		 - Database나 스케쥴러, 트랜잭션 등과 관련된 설정을 구현
+	 -->
+	
+	
+	<!-- 
+		properties 파일을 불러오도록 설정
+	 -->
+	<context:property-placeholder location="classpath:/properties/*.properties"/>
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+<!-- 	
+	데이터베이스 연결을 담당하는 객체를 등록
+	- DriverManagerDataSource
+ -->	 
+<!-- 	 연결 -->
+	 <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	 	<property name="driverClassName" value="${database.driver}"></property>
+	 	<property name="url" value="${database.url}"></property>
+	 	<property name="username" value="${database.username}"></property>
+	 	<property name="password" value="${database.password}"></property>
+	 </bean>
+	
+	<bean id="dbcpSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<property name="driverClassName" value="${database.driver}"></property>
+		<property name="url" value="${database.url}"></property>
+	 	<property name="username" value="${database.username}"></property>
+	 	<property name="password" value="${database.password}"></property>
+	 	
+	 	<property name="maxTotal" value="${database.dbcp.max-total}"></property>
+	 	<property name="maxIdle" value="${database.dbcp.max-idle}"></property>
+	 	<property name="maxWaitMillis" value="${database.dbcp.max-wait}"></property>
+	</bean>
+	
+	<!-- 
+		데이터베이스 명령 처리기 등록
+		 - JdbcTemplate
+		 - 연결객체를 주입하면 자동으로 실행시 연결 및 종료를 수행
+	 -->
+	 <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	 	<property name="dataSource" ref="dbcpSource"></property>
+	 </bean>
+	 
+	 <!-- 
+	 	myBatis 도구들을 등록
+	 	- sqlSession(org.mybatis.spring.SqlSessionFactoryBean)
+	 		- database에 대한 전반적인 관리를 수행하는 도구
+	 	- sqlSessionTemplate(org.mybatis.spring.SqlSessionTemplate)
+	 		- mybatis가 spring에 연동되도록 만들어주는 핵심도구
+	 		- 동시다발적인 처리를 안전하게 수행할 수 있도록 설계되어 있다
+	  -->
+	 <bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+	 	<property name="dataSource" ref="dbcpSource"></property>
+	 	<property name="configLocation" value="${path.mybatis.config-location}"></property>
+	 	<property name="mapperLocations" value="${path.mybatis.mapper-location}"></property>
+	 </bean>
+	 <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	 	<constructor-arg index="0" ref="sqlSession"></constructor-arg>
+	 </bean>
+	 	<!-- 파일 업로드를 위해 스프링이 사용할 도구를 등록 -->
+	<!-- id 지정되어있음 다른거 사용 X -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="10000000"></property>
+		<property name="maxUploadSizePerFile" value="1000000"></property>
+	</bean>
+	
+	 <context:component-scan base-package="com.kh.sts27" use-default-filters="false">
+	 	<context:include-filter type="regex" expression="com.kh.sts27.*"/>
+	 	<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	 </context:component-scan>
+	 
+	 <!-- 이메일 전송 객체 -->
+	 <bean id="emailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	 	<property name="host" value="smtp.gmail.com"></property>
+	 	<property name="port" value="587"></property>
+	 	<property name="username" value="pyong91test@gmail.com"></property>
+	 	<property name="password" value="dnjfydaos1!"></property>
+	 	
+	 	<property name="javaMailProperties">
+	 		<props>
+	 			<prop key="mail.smtp.auth">true</prop>
+	 			<prop key="mail.smtp.starttls.enable">true</prop>
+	 		</props>
+	 	</property>
+	 	
+	 </bean>
+	 
+	 <!-- 스프링 스케쥴링 활성화 -->
+	 <task:annotation-driven/>
+	 
+</beans>
