@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class KakaoPaySuccessAmountVO {
+public class KakaoPayAmountVO {
 	private int total, 
 				tax_free, 
 				vat, 

@@ -16,6 +16,6 @@ public class KakaoPaySuccessReturnVO {
 	private int quantity;
 	private String created_at, approved_at;
 	private String payload;
-	private KakaoPaySuccessAmountVO amount;
+	private KakaoPayAmountVO amount;
 	private KakaoPaySuccessCardInfoVO card_info;
 }

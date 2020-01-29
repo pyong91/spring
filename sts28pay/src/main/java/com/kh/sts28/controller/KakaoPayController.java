@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.sts28.entity.PayDto;
+import com.kh.sts28.repository.PayDao;
 import com.kh.sts28.service.PayService;
 import com.kh.sts28.vo.KakaoPayReadyReturnVO;
 import com.kh.sts28.vo.KakaoPayReadyVO;
+import com.kh.sts28.vo.KakaoPayRevokeReturnVO;
 import com.kh.sts28.vo.KakaoPaySuccessReadyVO;
 import com.kh.sts28.vo.KakaoPaySuccessReturnVO;
 
@@ -28,6 +31,15 @@ public class KakaoPayController {
 	
 	@Autowired
 	private PayService payService;
+	
+	@Autowired
+	private PayDao payDao;
+	
+	@GetMapping("/list")
+	public String list(Model model) {
+		model.addAttribute("list", payDao.getList());
+		return "pay/list";
+	}
 	
 	// 결제 준비(요청)
 	@GetMapping("/confirm")
@@ -86,7 +98,13 @@ public class KakaoPayController {
 //	@GetMapping("/fail")
 //	@GetMapping("/cancel")
 	
-	
+	// 결제 후 취소
+	@GetMapping("/revoke")
+	public String revoke(@RequestParam int no) throws URISyntaxException {
+		KakaoPayRevokeReturnVO vo = payService.revoke(no);
+		
+		return "redirect:list";
+	}
 	
 	
 	

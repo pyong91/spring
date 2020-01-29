@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+	namespace : 영역을 부르는 별칭
+	parameterType : 이 명령을 실행하기 위해 필요한 데이터의 형태
+	resultType : 기대되는 결과물의 형태
+	
+	형태에 따라 파라미터를 다르게 설정할 수 있다
+	# : 문자면 ''추가, 숫자는 ''없이 설정 및 인코딩 처리를 수행
+	$ : 값을 있는 그대로 출력하는 명령이므로 주로 "항목"에 사용 (보안에취약 값에 사용 노노)
+		- $ 는 SQL Injection 이라는 해킹 공격에 매우 취약하므로 사용에 주의
+	and : &&못씀..
+	
+ -->
+
+
+
+<mapper namespace="pay">
+	<!-- 
+		결제 준비물 등록 구문
+	-->
+	<insert id="ready" parameterType="payDto">
+		insert into pay(
+			no, tid, cid, process_time, partner_order_id, partner_user_id, item_name,
+			quantity, total_amount, status
+		) 
+		values(
+			pay_seq.nextval,
+			#{tid},
+			#{cid},
+			to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+			#{partner_order_id},
+			#{partner_user_id},
+			#{item_name},
+			#{quantity},
+			#{total_amount},
+			'준비'
+		)
+	</insert>
+	
+	<insert id="success" parameterType="payDto">
+		insert into pay(
+			no, tid, cid, process_time, partner_order_id,
+			partner_user_id, item_name, quantity, total_amount,
+			status, aid
+		) 
+		values(
+			pay_seq.nextval,
+			#{tid},
+			#{cid},
+			to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+			#{partner_order_id},
+			#{partner_user_id},
+			#{item_name},
+			#{quantity},
+			#{total_amount},
+			'완료',
+			#{aid}
+		)
+	</insert>
+	
+	<select id="list" resultType="payDto">
+		select * from pay order by no asc
+	</select>
+	
+	<select id="get" parameterType="int" resultType="payDto">
+		select * from pay where no = #{no}
+	</select>
+	
+	
+	<!-- 취소  -->
+	<insert id="revoke" parameterType="payDto">
+		insert into pay(
+			no, tid, cid, process_time, partner_order_id,
+			partner_user_id, item_name, quantity, total_amount,
+			status, aid
+		) 
+		values(
+			pay_seq.nextval,
+			#{tid},
+			#{cid},
+			to_date(#{process_time}, 'YYYY-MM-DD"T"HH24:MI:SS'),
+			#{partner_order_id},
+			#{partner_user_id},
+			#{item_name},
+			#{quantity},
+			#{total_amount},
+			'취소',
+			#{aid}
+		)
+	</insert>
+</mapper>
